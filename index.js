@@ -1,31 +1,15 @@
-require('dotenv').config()
-const Note = require('./models/note')
-const express = require('express')
-const cors = require('cors')
-const app = express()
+const app = require('./app')
+const config = require('./utils/config')
+const logger = require('./utils/logger')
+
+app.listen(config.PORT, () => {
+    logger.info(`Server running on port ${config.PORT}`)
+})
 
 app.use(express.json());
 app.use(cors());
 app.use(express.static('build'))
 app.use(error);
-
-let notes = [
-    {
-        id: 1,
-        content: "HTML is easy",
-        important: true
-    },
-    {
-        id: 2,
-        content: "Browser can execute only JavaScript",
-        important: false
-    },
-    {
-        id: 3,
-        content: "GET and POST are the most important methods of HTTP protocol",
-        important: true
-    }
-]
 
 app.get('/', (request, response) => {
     Note.find({}).then(notes =>
@@ -97,7 +81,6 @@ const errorHandler = (error, request, response, next) => {
     next(error)
 }
 
-const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
