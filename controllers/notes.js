@@ -1,8 +1,8 @@
 const notesRouter = require('express').Router()
 const Note = require('../models/note')
 
-notesRouter.get('/', (request, response) => {
-  Note.find({}).then(notes => {
+notesRouter.get('/', async (request, response) => {
+  await Note.find({}).then(notes => {
     response.json(notes)
   })
 })
@@ -29,7 +29,7 @@ notesRouter.post('/', (request, response, next) => {
 
   note.save()
     .then(savedNote => {
-      response.json(savedNote)
+      response.status(201).json(savedNote)
     })
     .catch(error => next(error))
 })
